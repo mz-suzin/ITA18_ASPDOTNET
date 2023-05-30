@@ -23,4 +23,14 @@ public class CepModel
         };
         
     }
+    public static CepModel ParaModel(CepRequisicaoDTO dto)
+    {
+        return new CepModel{
+            Cep = dto.Cep,
+            Estado = dto.Estado,
+            Cidade = dto.Cidade,
+            Bairro = dto.Bairro,
+            Logradouro = dto.Logradouro
+        };
+    }
 }

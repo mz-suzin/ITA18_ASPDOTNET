@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Cors;
 using DemoCep.Services;
 using DemoCep.Models;
 using DemoCep.DTOs;
@@ -7,6 +8,7 @@ namespace DemoCep.Controllers;
 
 [ApiController]
 [Route("api/v1/cep")]
+[EnableCors("PermiteTudo")]
 public class CepController : ControllerBase
 {
     private ICepRepository _cepRepository;
@@ -40,4 +42,24 @@ public class CepController : ControllerBase
         }
         return CepModel.ParaDTO(cep);
     }
+
+    //POST .../api/v1/cep
+    [HttpPost]
+    [ProducesResponseType(201)]
+    [ProducesResponseType(404)]
+    [ProducesResponseType(500)]
+    public ActionResult<CepRespostaDTO> Post(CepRequisicaoDTO cepdto)
+    {
+        CepModel? cepAtual = _cepRepository.ConsultaPorCodigo(cepdto.Cep);
+        if (cepAtual != null){
+            return Problem("CEP já existe na base de dados");
+        }
+        CepModel cepNovo = _cepRepository.Cadastrar(CepModel.ParaModel(cepdto));
+        return CreatedAtAction(nameof(Get), new {codigocep = cepNovo.Cep}, cepNovo);
+    }
 }
+
+
+
+// como adicionar um novo cep na lista? post ou put?
+// e se eu quiser autenticação?
