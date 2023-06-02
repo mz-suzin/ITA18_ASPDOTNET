@@ -1,0 +1,23 @@
+@model CepViewModel
+
+@{
+    ViewData["Title"] = "CEPs";
+}
+
+<div class="text-center">
+    <h2 class="display-4">Consulta: </h2>
+    <div class="row">
+        <div class="col-md-4">
+            <form asp-action="Search" method="get">
+                <div class="form-group">
+                    <label for="cep">CEP:</label>
+                    <input type="text" id="cep" name="cep" @*size="10" maxlength="8"*@ value="@ViewData["Id"]"/>
+                    <input type="submit" value="buscar" />
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class="row">
+        <span>@Model?.Logradouro</span> @*null coalescing*@
+    </div>
+</div>
